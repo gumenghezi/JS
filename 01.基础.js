@@ -19,3 +19,9 @@ let b = {
 }
 console.log(1 + b) // => 3
 console.log('1' + b) // => '12'
+
+
+// == 操作符
+console.log(Number(''))
+
+
