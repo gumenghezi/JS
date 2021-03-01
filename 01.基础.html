@@ -7,37 +7,44 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <input type="text" id="input" />
 </body>
 </html>
 <script>
-function Otaku (name, age) {
-    this.name = name;
-    this.age = age;
+var value = 2;
 
-    this.habit = 'Games';
-}
-
-Otaku.prototype.strength = 60;
-
-Otaku.prototype.sayYourName = function () {
-    console.log('I am ' + this.name);
-}
-
-function objectFactory() {
-    var obj = new Object(),
-    Constructor = [].shift.call(arguments);
-    obj.__proto__ = Constructor.prototype;
-    Constructor.apply(obj, arguments);
-    return obj;
+var foo = {
+    value: 1
 };
+Function.prototype.myBind = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Error')
+  }
+  var _this = this
+  var args = [...arguments].slice(1)
+  // 返回一个函数
+  return function F() {
+    // 因为返回了一个函数，我们可以 new F()，所以需要判断
+    if (this instanceof F) {
+      return new _this(...args, ...arguments)
+    }
+    return _this.apply(context, args.concat(...arguments))
+  }
+}
 
-var person = objectFactory(Otaku, 'Kevin', '18')
+function bar(name, age) {
+    this.habit = 'shopping';
+    console.log(this.value);
+    console.log(name);
+    console.log(age);
+}
 
-console.log(person.name) // Kevin
-console.log(person.habit) // Games
-console.log(person.strength) // 60
 
-person.sayYourName(); // I am Kevin
+
+bar.prototype.friend = 'kevin';
+
+var bindFoo = bar.myBind(foo, 'daisy');
+
+var obj = new bindFoo('18');
 
 </script>
